@@ -15,7 +15,7 @@ public class LogAnalyzer
     /**
      * Create an object to analyze hourly web accesses.
      */
-    public LogAnalyzer()
+    public LogAnalyzer(String fileName)
     { 
         // Create the array object to hold the hourly
         // access counts.
@@ -35,7 +35,88 @@ public class LogAnalyzer
             hourCounts[hour]++;
         }
     }
-
+    
+    /**
+     * @return Total number of Accessed
+     */
+    public int numberOfAccesses()
+    {
+        int total = 0;
+        for(int hour = 0; hour <= hourCounts.length -1; hour++)
+        {
+            total = total + hourCounts[hour];
+        }
+        return total;
+    }
+    
+    /**
+     * @return The busiest hour
+     */
+    public int busiestHour()
+    {
+       int maxCount = hourCounts[0];
+       
+       for(int hour = 1; hour <= hourCounts.length -1; hour++)
+       {
+           if(maxCount < hourCounts[hour])
+           {
+               maxCount = hourCounts[hour];
+            }
+        }
+        return maxCount;
+    }
+    
+    /**
+     * @return Two hour period is the busiest
+     */
+    public int twobusiestHour()
+    {
+        int numBusiest = 0;
+        int busiestHour = 0;
+        for(int hour = 1; hour <= hourCounts.length -1; hour++)
+        {
+            if (numBusiest < hourCounts[hour] + hourCounts[hour + 1])
+            {
+                busiestHour = hour;
+                numBusiest = hourCounts[hour] + hourCounts[hour + 1];
+                hour++;
+            }
+            else 
+            {
+                hour++;
+            }
+        }
+        return busiestHour;
+    }   
+    
+    /**
+     * @return The least busy hour
+     */
+    public int quietestHour()
+    {
+        int minCount = 0;
+        boolean initializeCounter = false;
+        for(int hour = 0; hour <= hourCounts.length -1; hour++)
+        {
+            if(initializeCounter == false)
+            {
+                if(hourCounts[hour] > 0)
+                {
+                    minCount = hourCounts[hour];
+                    initializeCounter = true;
+                }
+           }
+           else
+            {
+                if(hourCounts[hour] > 0 && minCount > hourCounts[hour])
+                {
+                    minCount = hourCounts[hour];
+                }
+            }
+        }
+        return minCount;
+    }
+    
     /**
      * Print the hourly counts.
      * These should have been set with a prior
